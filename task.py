@@ -1,7 +1,8 @@
+import requests
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.models.baseoperator import BaseOperator
 from airflow.utils.decorators import apply_defaults
-import requests
+
 
 class UrltoPostgresOperator(BaseOperator):
     
