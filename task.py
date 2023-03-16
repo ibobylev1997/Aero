@@ -19,7 +19,7 @@ class UrltoPostgresOperator(BaseOperator):
         self.target_schema = target_schema
         self.target_table = target_table
 
-    def get_data_from_api(self,):
+    def get_data_from_api(self):
 
         response = requests.get(self.url)
 
@@ -30,12 +30,11 @@ class UrltoPostgresOperator(BaseOperator):
         else:
             print('Error: ' + str(response.status_code))
         
-    def load_data_to_postgres(self,):
+    def load_data_to_postgres(self):
 
         source = PostgresHook(postgres_conn_id='my_postgres_connection')
 
-        conn = source.get_conn()
-        cursor = conn.cursor()
+        cursor = conn.get_cursor()
 
         for item in get_data_from_api():
             query = "INSERT INTO {}.{} {} VALUES {}".format(self.target_schema, \
@@ -46,4 +45,7 @@ class UrltoPostgresOperator(BaseOperator):
             cursor.execute(query)
 
         cursor.close()
-        conn.close()
+        source.commit()
+        
+     def execute(self, context):
+        self.load_data_to_postgres()
