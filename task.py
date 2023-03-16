@@ -19,7 +19,7 @@ class UrltoPostgresOperator(BaseOperator):
         self.target_schema = target_schema
         self.target_table = target_table
 
-    def get_data_from_api():
+    def get_data_from_api(self,):
 
         response = requests.get(self.url)
 
@@ -30,7 +30,7 @@ class UrltoPostgresOperator(BaseOperator):
         else:
             print('Error: ' + str(response.status_code))
         
-    def load_data_to_postgres():
+    def load_data_to_postgres(self,):
 
         source = PostgresHook(postgres_conn_id='my_postgres_connection')
 
